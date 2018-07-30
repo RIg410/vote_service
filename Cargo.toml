@@ -1,5 +1,5 @@
 [package]
-name = "voting_service"
+name = "vote_service"
 publish = false
 version = "0.1.0"
 authors = ["dyakushev <DYakushev@medlinesoft.ru>"]

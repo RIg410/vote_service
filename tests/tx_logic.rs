@@ -1,13 +1,13 @@
 extern crate exonum;
-extern crate voting_service as voting;
+extern crate vote_service as vote;
 extern crate exonum_testkit;
 
 use exonum::crypto::{self, PublicKey, SecretKey};
 use exonum_testkit::{TestKit, TestKitBuilder};
 
-use voting::{
+use vote::{
     transactions::{CreateCandidate, CreateElector, Vote},
-    schema::{VotingSchema, Candidate, Elector},
+    schema::{VoteSchema, Candidate, Elector},
 };
 
 #[test]
@@ -121,7 +121,7 @@ fn create_elector(testkit: &mut TestKit, name: &str) -> (CreateElector, SecretKe
 
 fn try_get_candidate(testkit: &TestKit, pubkey: &PublicKey) -> Option<Candidate> {
     let snapshot = testkit.snapshot();
-    VotingSchema::new(&snapshot).candidate(pubkey)
+    VoteSchema::new(&snapshot).candidate(pubkey)
 }
 
 fn get_candidate(testkit: &TestKit, pubkey: &PublicKey) -> Candidate {
@@ -130,7 +130,7 @@ fn get_candidate(testkit: &TestKit, pubkey: &PublicKey) -> Candidate {
 
 fn try_get_elector(testkit: &TestKit, pubkey: &PublicKey) -> Option<Elector> {
     let snapshot = testkit.snapshot();
-    VotingSchema::new(&snapshot).elector(pubkey)
+    VoteSchema::new(&snapshot).elector(pubkey)
 }
 
 fn get_elector(testkit: &TestKit, pubkey: &PublicKey) -> Elector {
@@ -139,6 +139,6 @@ fn get_elector(testkit: &TestKit, pubkey: &PublicKey) -> Elector {
 
 fn init_testkit() -> TestKit {
     TestKitBuilder::validator()
-        .with_service(voting::service::VotingService)
+        .with_service(vote::service::VoteService)
         .create()
 }

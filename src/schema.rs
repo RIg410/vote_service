@@ -3,9 +3,9 @@ use exonum::{
     storage::{Fork, Snapshot, ProofMapIndex, ProofListIndex},
 };
 
-const CANDIDATE_INDEX: &str = "voting.candidate";
-const ELECTORATE_INDEX: &str = "voting.electorate";
-const VOTE_HISTORY: &str = "voting.vote.history";
+const CANDIDATE_INDEX: &str = "vote.candidate";
+const ELECTORATE_INDEX: &str = "vote.electorate";
+const VOTE_HISTORY: &str = "vote.history";
 
 encoding_struct! {
     struct Candidate {
@@ -36,17 +36,17 @@ impl Elector {
     }
 }
 
-pub struct VotingSchema<T> {
+pub struct VoteSchema<T> {
     view: T,
 }
 
-impl<T> VotingSchema<T> {
+impl<T> VoteSchema<T> {
     pub fn new(snapshot: T) -> Self {
-        VotingSchema { view: snapshot }
+        VoteSchema { view: snapshot }
     }
 }
 
-impl<T: AsRef<dyn Snapshot>> VotingSchema<T> {
+impl<T: AsRef<dyn Snapshot>> VoteSchema<T> {
     pub fn state_hash(&self) -> Vec<Hash> {
         vec![
             self.candidates().merkle_root(),
@@ -75,7 +75,7 @@ impl<T: AsRef<dyn Snapshot>> VotingSchema<T> {
     }
 }
 
-impl<'a> VotingSchema<&'a mut Fork> {
+impl<'a> VoteSchema<&'a mut Fork> {
     pub fn candidate_mut(&mut self) -> ProofMapIndex<&mut Fork, PublicKey, Candidate> {
         ProofMapIndex::new(CANDIDATE_INDEX, &mut self.view)
     }

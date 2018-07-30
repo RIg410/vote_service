@@ -1,6 +1,6 @@
 use api::PublicApi;
-use schema::VotingSchema;
-use transactions::VotingTransactions;
+use schema::VoteSchema;
+use transactions::VoteTransactions;
 
 use exonum::{
     api::ServiceApiBuilder,
@@ -9,14 +9,14 @@ use exonum::{
     messages::RawTransaction, storage::Snapshot,
 };
 
-pub const VOTING_SERVICE: u16 = 13;
-pub const SERVICE_NAME: &str = "voting";
+pub const VOTE_SERVICE: u16 = 13;
+pub const SERVICE_NAME: &str = "vote";
 
-pub struct VotingService;
+pub struct VoteService;
 
-impl Service for VotingService {
+impl Service for VoteService {
     fn service_id(&self) -> u16 {
-        VOTING_SERVICE
+        VOTE_SERVICE
     }
 
     fn service_name(&self) -> &str {
@@ -24,12 +24,12 @@ impl Service for VotingService {
     }
 
     fn state_hash(&self, snapshot: &Snapshot) -> Vec<Hash> {
-        let schema = VotingSchema::new(snapshot);
+        let schema = VoteSchema::new(snapshot);
         schema.state_hash()
     }
 
     fn tx_from_raw(&self, raw: RawTransaction) -> Result<Box<Transaction>, StreamStructError> {
-        let tx = VotingTransactions::tx_from_raw(raw)?;
+        let tx = VoteTransactions::tx_from_raw(raw)?;
         Ok(tx.into())
     }
 

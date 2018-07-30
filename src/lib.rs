@@ -26,6 +26,6 @@ impl fabric::ServiceFactory for ServiceFactory {
     }
 
     fn make_service(&mut self, _: &Context) -> Box<dyn Service> {
-        Box::new(service::VotingService)
+        Box::new(service::VoteService)
     }
 }
