@@ -1,5 +1,5 @@
 # Voting service.
-This project is simple voting service based on Exonum framework.
+This project is simple vote service based on Exonum framework.
 This project implements operations:
 - Create a new elector.
 - Create a new candidate.
@@ -12,11 +12,11 @@ on the local machine.
 
 Clone the project:
 ```sh
-git clone https://github.com/RIg410/voting_service.git
+git clone https://github.com/RIg410/vote_service.git
 ```
 Build the project:
 ```sh
-cd voting_service
+cd vote_service
 cargo install
 ```
 Generate template:
