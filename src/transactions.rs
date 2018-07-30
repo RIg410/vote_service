@@ -3,7 +3,7 @@ use exonum::{
     messages::Message, storage::Fork,
 };
 use service;
-use schema::{VotingSchema, Candidate, Elector};
+use schema::{VoteSchema, Candidate, Elector};
 use errors::Error;
 
 transactions! {
@@ -33,7 +33,7 @@ impl Transaction for CreateCandidate {
     }
 
     fn execute(&self, fork: &mut Fork) -> Result<(), ExecutionError> {
-        let mut schema = VotingSchema::new(fork);
+        let mut schema = VoteSchema::new(fork);
 
         if schema.candidate(self.pub_key()).is_none() {
             let history_hash = {
@@ -59,7 +59,7 @@ impl Transaction for CreateElector {
     }
 
     fn execute(&self, fork: &mut Fork) -> Result<(), ExecutionError> {
-        let mut schema = VotingSchema::new(fork);
+        let mut schema = VoteSchema::new(fork);
 
         if schema.elector(self.pub_key()).is_none() {
             let elector = Elector::new(self.pub_key(), self.name(), true);
@@ -78,7 +78,7 @@ impl Transaction for Vote {
     }
 
     fn execute(&self, fork: &mut Fork) -> Result<(), ExecutionError> {
-        let mut schema = VotingSchema::new(fork);
+        let mut schema = VoteSchema::new(fork);
         let elector = match schema.elector(self.elector()) {
             Some(val) => val,
             None => Err(Error::ElectorNotFound)?,

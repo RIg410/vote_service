@@ -1,5 +1,5 @@
 use api::PublicApi;
-use schema::VotingSchema;
+use schema::VoteSchema;
 use transactions::VotingTransactions;
 
 use exonum::{
@@ -10,11 +10,11 @@ use exonum::{
 };
 
 pub const VOTING_SERVICE: u16 = 13;
-pub const SERVICE_NAME: &str = "voting";
+pub const SERVICE_NAME: &str = "vote";
 
-pub struct VotingService;
+pub struct VoteService;
 
-impl Service for VotingService {
+impl Service for VoteService {
     fn service_id(&self) -> u16 {
         VOTING_SERVICE
     }
@@ -24,7 +24,7 @@ impl Service for VotingService {
     }
 
     fn state_hash(&self, snapshot: &Snapshot) -> Vec<Hash> {
-        let schema = VotingSchema::new(snapshot);
+        let schema = VoteSchema::new(snapshot);
         schema.state_hash()
     }
 

@@ -3,7 +3,7 @@ extern crate serde_json;
 
 extern crate exonum_testkit;
 extern crate exonum;
-extern crate voting_service as voting;
+extern crate vote_service as voting;
 
 use exonum::{
     api::node::public::explorer::TransactionQuery,
@@ -13,7 +13,7 @@ use exonum::{
 use exonum_testkit::{ApiKind, TestKit, TestKitApi, TestKitBuilder};
 use voting::{
     api::{CandidateQuery, ElectorQuery, VotingResults},
-    service::{VotingService, SERVICE_NAME},
+    service::{VoteService, SERVICE_NAME},
     transactions::{CreateCandidate, CreateElector, Vote},
     schema::{Candidate, Elector},
 };
@@ -237,7 +237,7 @@ impl Api {
 
 fn create_testkit() -> (TestKit, Api) {
     let testkit = TestKitBuilder::validator()
-        .with_service(VotingService)
+        .with_service(VoteService)
         .create();
     let api = Api {
         inner: testkit.api(),

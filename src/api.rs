@@ -10,7 +10,7 @@ use exonum::{
 
 use service::VOTING_SERVICE;
 use transactions::VotingTransactions;
-use schema::{Candidate, Elector, VotingSchema};
+use schema::{Candidate, Elector, VoteSchema};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct TransactionResponse {
@@ -58,7 +58,7 @@ impl PublicApi {
 
         let max_height = general_schema.block_hashes_by_height().len() - 1;
 
-        let schema = VotingSchema::new(state.snapshot());
+        let schema = VoteSchema::new(state.snapshot());
         let idx = schema.candidates();
 
         let total_votes_number: u64 = idx.iter()
@@ -83,7 +83,7 @@ impl PublicApi {
     }
 
     fn get_candidate_info(
-        schema: &VotingSchema<Box<Snapshot>>,
+        schema: &VoteSchema<Box<Snapshot>>,
         general_schema: &GeneralSchema<&Box<Snapshot>>,
         candidate: Candidate,
         total_votes_number: u64,
@@ -120,13 +120,13 @@ impl PublicApi {
     }
 
     pub fn get_elector(state: &ServiceApiState, query: ElectorQuery) -> api::Result<Elector> {
-        let schema = VotingSchema::new(state.snapshot());
+        let schema = VoteSchema::new(state.snapshot());
         schema.elector(&query.pub_key)
             .ok_or_else(|| api::Error::NotFound("Elector not found".to_owned()))
     }
 
     pub fn get_candidate(state: &ServiceApiState, query: CandidateQuery) -> api::Result<Candidate> {
-        let schema = VotingSchema::new(state.snapshot());
+        let schema = VoteSchema::new(state.snapshot());
         schema.candidate(&query.pub_key)
             .ok_or_else(|| api::Error::NotFound("Candidate not found".to_owned()))
     }
@@ -159,7 +159,7 @@ impl PublicApi {
 
     pub fn get_candidates(state: &ServiceApiState, _query: ()) -> api::Result<Vec<Candidate>> {
         let snapshot = state.snapshot();
-        let schema = VotingSchema::new(snapshot);
+        let schema = VoteSchema::new(snapshot);
         let idx = schema.candidates();
         let candidates = idx.values().collect();
         Ok(candidates)

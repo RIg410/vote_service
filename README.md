@@ -22,28 +22,28 @@ cargo install
 Generate template:
 ```sh
 mkdir service
-voting_service generate-template service/common.toml --validators-count 2
+vote_service generate-template service/common.toml --validators-count 2
 ```
 Generate public and secrets keys for each node:
 ```sh
-voting_service generate-config service/common.toml  service/pub_1.toml service/sec_1.toml --peer-address 127.0.0.1:6331
-voting_service generate-config service/common.toml  service/pub_2.toml service/sec_2.toml --peer-address 127.0.0.1:6332
+vote_service generate-config service/common.toml  service/pub_1.toml service/sec_1.toml --peer-address 127.0.0.1:6331
+vote_service generate-config service/common.toml  service/pub_2.toml service/sec_2.toml --peer-address 127.0.0.1:6332
 ```
 
 Finalize configs:
 ```sh
-voting_service finalize --public-api-address 0.0.0.0:8200 --private-api-address 0.0.0.0:8091 service/sec_1.toml service/node_1_cfg.toml --public-configs service/pub_1.toml service/pub_2.toml 
-voting_service finalize --public-api-address 0.0.0.0:8201 --private-api-address 0.0.0.0:8092 service/sec_2.toml service/node_2_cfg.toml --public-configs service/pub_1.toml service/pub_2.toml
+vote_service finalize --public-api-address 0.0.0.0:8200 --private-api-address 0.0.0.0:8091 service/sec_1.toml service/node_1_cfg.toml --public-configs service/pub_1.toml service/pub_2.toml 
+vote_service finalize --public-api-address 0.0.0.0:8201 --private-api-address 0.0.0.0:8092 service/sec_2.toml service/node_2_cfg.toml --public-configs service/pub_1.toml service/pub_2.toml
 ```
 
 Run nodes:
 ```sh
-voting_service run --node-config service/node_1_cfg.toml --db-path service/db1 --public-api-address 0.0.0.0:8200
-voting_service run --node-config service/node_2_cfg.toml --db-path service/db2 --public-api-address 0.0.0.0:8201
+vote_service run --node-config service/node_1_cfg.toml --db-path service/db1 --public-api-address 0.0.0.0:8200
+vote_service run --node-config service/node_2_cfg.toml --db-path service/db2 --public-api-address 0.0.0.0:8201
 ```
 
 #Api
-Base URL for voting service endpoints: http://{host}:{port}/api/services/voting
+Base URL for vote service endpoints: http://{host}:{port}/api/services/vote
 
 - Create a new elector.
 ```
