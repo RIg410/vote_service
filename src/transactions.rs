@@ -7,8 +7,8 @@ use schema::{VoteSchema, Candidate, Elector};
 use errors::Error;
 
 transactions! {
-    pub VotingTransactions {
-        const SERVICE_ID = service::VOTING_SERVICE;
+    pub VoteTransactions {
+        const SERVICE_ID = service::VOTE_SERVICE;
 
         struct CreateCandidate {
             pub_key: &PublicKey,

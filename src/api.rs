@@ -8,8 +8,8 @@ use exonum::{
     explorer::{BlockchainExplorer, TransactionInfo}
 };
 
-use service::VOTING_SERVICE;
-use transactions::VotingTransactions;
+use service::VOTE_SERVICE;
+use transactions::VoteTransactions;
 use schema::{Candidate, Elector, VoteSchema};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -29,7 +29,7 @@ pub struct ElectorQuery {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct VotingHistory {
-    pub transactions: Vec<VotingTransactions>,
+    pub transactions: Vec<VoteTransactions>,
     pub history_proof: ListProof<Hash>,
 }
 
@@ -73,7 +73,7 @@ impl PublicApi {
             .unwrap();
 
         let to_table: MapProof<Hash, Hash> =
-            general_schema.get_proof_to_service_table(VOTING_SERVICE, 0);
+            general_schema.get_proof_to_service_table(VOTE_SERVICE, 0);
 
         Ok(VotingResults {
             candidates,
@@ -91,10 +91,10 @@ impl PublicApi {
         let history = schema.vote_history(&candidate.pub_key());
         let history_proof = history.get_range_proof(0, history.len());
 
-        let transactions: Vec<VotingTransactions> = history
+        let transactions: Vec<VoteTransactions> = history
             .iter()
             .map(|record| general_schema.transactions().get(&record).unwrap())
-            .map(|raw| VotingTransactions::tx_from_raw(raw).unwrap())
+            .map(|raw| VoteTransactions::tx_from_raw(raw).unwrap())
             .collect::<Vec<_>>();
 
         let percent = candidate.voices() as f64 / total_votes_number as f64 * 100.0;
@@ -112,7 +112,7 @@ impl PublicApi {
         }
     }
 
-    pub fn post_candidate(state: &ServiceApiState, query: VotingTransactions) -> api::Result<TransactionResponse> {
+    pub fn post_candidate(state: &ServiceApiState, query: VoteTransactions) -> api::Result<TransactionResponse> {
         let transaction: Box<dyn Transaction> = query.into();
         let tx_hash = transaction.hash();
         state.sender().send(transaction)?;
@@ -136,11 +136,11 @@ impl PublicApi {
         let tx_list = core_schema.transactions();
 
         let tx = tx_list.iter()
-            .map(|row| (row.0, VotingTransactions::tx_from_raw(row.1)))
+            .map(|row| (row.0, VoteTransactions::tx_from_raw(row.1)))
             .find(|tx| {
                 if let Ok(tx) = &tx.1 {
                     match &tx {
-                        VotingTransactions::Vote(vote) => &query.pub_key == vote.elector(),
+                        VoteTransactions::Vote(vote) => &query.pub_key == vote.elector(),
                         _ => false,
                     }
                 } else {

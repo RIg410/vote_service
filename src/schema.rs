@@ -3,9 +3,9 @@ use exonum::{
     storage::{Fork, Snapshot, ProofMapIndex, ProofListIndex},
 };
 
-const CANDIDATE_INDEX: &str = "voting.candidate";
-const ELECTORATE_INDEX: &str = "voting.electorate";
-const VOTE_HISTORY: &str = "voting.vote.history";
+const CANDIDATE_INDEX: &str = "vote.candidate";
+const ELECTORATE_INDEX: &str = "vote.electorate";
+const VOTE_HISTORY: &str = "vote.history";
 
 encoding_struct! {
     struct Candidate {
